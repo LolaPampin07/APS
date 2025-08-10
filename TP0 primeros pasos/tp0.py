@@ -41,6 +41,6 @@ tt, xx = mi_funcion_sen(amp, offset,frec, fase, N, frecADC)
 
 # Grafico
 plt.xlabel('Tiempo [s]')
-plt.ylabel('sen [rad]')
+plt.ylabel('sen [V]')
 plt.plot( tt, xx, 'o--')
 
