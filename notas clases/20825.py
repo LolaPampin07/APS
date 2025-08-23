@@ -26,8 +26,9 @@ for k in range(N):
     for n in range(N):
         X[k] += xx[n] * np.exp(-1j * 2 * np.pi * k * n / N)
 
-# Magnitud de la DFT
+# Magnitud y fase de la DFT
 X_mag = np.abs(X)
+X_ph=np.angle(X)
 
 # Graficar señal original
 plt.figure(figsize=(12, 5))
@@ -39,8 +40,11 @@ plt.ylabel("Amplitud")
 
 
 # Graficar DFT
+
+frecuencia = np.arange(N) * 2*np.pi/N
+
 plt.subplot(1, 2, 2)
-plt.plot(tt, X_mag)
+plt.plot(frecuencia, X_mag) #el grafico de dft debe estan en funcion de las frecencias
 plt.title("Magnitud de la DFT")
 plt.xlabel("Frecuencia [Hz]")
 plt.ylabel("|X[k]|")

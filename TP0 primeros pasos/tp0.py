@@ -23,16 +23,18 @@ def mi_funcion_sen (amp = 1, offset = 0, frec = 1, fase=0, N = 1000, frecADC = 1
     
     ts= 1/frecADC #tiempo al que se toma cada muestra [s]
 
-    tt = np.arange(start = 0, stop = N*ts, step = ts)
+    tt = np.arange(start = 0, stop = N*ts, step = ts) #tambien puedo usar linespace
+    
 
     xx = amp * np.sin( 2 * np.pi * frec * tt + fase) + offset
     
     return tt, xx
-n=0
+
 # Definicon de la funcion para graficar
 def graficar(x, y, ejex, ejey, titulo):
-    plt.plot(x,y,label='Funcion', linestyle='-',color='r') #Genero un grafico llamado 'funcion' con linea 'discontinua-punteada' de color 'rojo'
-    plt.plot(x,y,label='Puntos',linestyle='',marker='o',color='y') #Genero un grafico llamado 'Puntos', sin linea de color amarillo
+    plt.figure() #abre una pestaña por grafico
+    plt.plot(x,y,':x',label='Funcion', linestyle='-',color='r') #Genero un grafico llamado 'funcion' con linea 'discontinua-punteada' de color 'rojo'
+    plt.plot(x,y,':x', label='Puntos',linestyle='',marker='o',color='y') #Genero un grafico llamado 'Puntos', sin linea de color amarillo
     plt.title(titulo) #Titulo del grafico
     plt.xlabel(ejex) #Titulo del eje
     plt.ylabel(ejey) #Titulo del eje 
@@ -42,12 +44,12 @@ def graficar(x, y, ejex, ejey, titulo):
     
 
 # Creacion de variables
-amp=2 # [Volt]
-offset = 1 # Valor medio en Volts
-frec = 5 # Frecuencia en Hz
-fase= np.pi/4 # Fase en radianes
 N= 1000 # Cantidad de muestras
-frecADC= 1000 #frecuencia de muestreo del ADC [Hz]
+amp= 1 # [Volt]
+offset = 0 # Valor medio en Volts
+frec = N # Frecuencia en Hz
+fase= 0 # Fase en radianes
+frecADC= N #frecuencia de muestreo del ADC [Hz]
 
 #Llamo a la funcion
 tt, xx = mi_funcion_sen(amp, offset,frec, fase, N, frecADC)
@@ -65,11 +67,20 @@ ff = 1001 Hz
 ff = 2001 Hz
 🤯 Implementar alguna otra señal propia de un generador de señales. """
 
-tt1,xx1=mi_funcion_sen (amp = 1, offset = 0, frec = 500, fase=0, N = 1000, frecADC = 500000) #cambio la frecuencia del ADC para poder visualizar el grafico
+tt1,xx1=mi_funcion_sen (amp = 1, offset = 0, frec = 500, fase=0, N = 1000, frecADC = 1000) #cambio la frecuencia del ADC para poder visualizar el grafico
+#frecuencia de nyquist!
 graficar(tt1, xx1, 't[s]','sen [V]', 'frec 500Hz')
+
+
+
 
 tt2,xx2=mi_funcion_sen (amp = 1, offset = 0, frec = 999, fase=0, N = 1000, frecADC = 1000)
 graficar(tt2, xx2, 't[s]','sen [V]', 'frec 999 Hz')
+#veo un ciclo, veo 1Hz ==> 999 un poco antes de ws
+
+#el coseno es una funcion par ==> nunca va a estar en contrafase
+
+
 
 tt3,xx3=mi_funcion_sen (amp = 1, offset = 0, frec = 1001, fase=0, N = 1000, frecADC = 1000)
 graficar(tt3, xx3, 't[s]','sen [V]', 'frec 1001 Hz')
@@ -87,6 +98,9 @@ def mi_funcion_cuadrada(frec=4, frecADC=100, N=100, offset=0, fase=0):
     graficar(ttc,xxc,'t[s]','senal cuadrada [V]', 'funcion adicional')
     
 mi_funcion_cuadrada()
+sumatoria=(1/1000)*np.var(xx)
+sumatorioS=(1/1000)*np.sum(xx**2) #tiene que dar 1/2
+
 
 
 
