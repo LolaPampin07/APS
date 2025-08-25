@@ -9,27 +9,37 @@ from scipy import signal
 
 #Invocacion de funciones
 N=100
+frecADC=40000
+t1=11
+t0=1
 #------------------------------------Ejercicio 1---------------------------------------------------------------
 
 #a) Una señal sinusoidal de 2KHz.
-tta,fa=ts1.mi_funcion_sen(1,0,2000,0,N,40000)
+tta,fa=ts1.mi_funcion_sen(1,0,2000,0,N,frecADC)
 
 #b) Misma señal amplificada y desfazada en π/2.
-ttb,fb=ts1.mi_funcion_sen(2,0,2000,np.pi/2,N,40000)
+ttb,fb=ts1.mi_funcion_sen(2,0,2000,np.pi/2,N,frecADC)
 
 #c) Misma señal modulada en amplitud por otra señal sinusoidal de la mitad de la frecuencia.
-ttc,fc=ts1.mi_funcion_item_C(1,0,2000,0,N,40000)
+ttc,fc=ts1.mi_funcion_item_C(1,0,2000,0,N,frecADC)
 
 #d) Señal anterior recortada al 75% de su potencia (energia) 
-ttd,fd=ts1.mi_funcion_item_D(1,0,2000,0,N,40000)
+ttd,fd=ts1.mi_funcion_item_D(1,0,2000,0,N,frecADC)
 
 #e) Una señal cuadrada de 4KHz.
-tte,fe=ts1.mi_funcion_cuadrada(0, 4000, 0, N, frecADC = 40000)
+tte,fe=ts1.mi_funcion_cuadrada(0, 4000, 0, N, frecADC = frecADC)
 
 #f) Un pulso rectangular de 10ms. --> NO HAY FRECUENCIA UN SOLO 
-ff=ts1.mi_funcion_pulso(1,11,N,1)
+ff=ts1.mi_funcion_pulso(t0,t1,N,1)
 
 #g) En cada caso indique tiempo entre muestras, número de muestras y potencia.
+ts=1/frecADC
+ts1.mi_funcion_item_G(N, ts, fa)
+ts1.mi_funcion_item_G(N, ts, fb)
+ts1.mi_funcion_item_G(N, ts, fc)
+ts1.mi_funcion_item_G(N, ts, fd)
+ts1.mi_funcion_item_G(N, ts, fe)
+ts1.mi_funcion_item_G(N, t1-t0, ff)
 
 
 # Graficos item 1
