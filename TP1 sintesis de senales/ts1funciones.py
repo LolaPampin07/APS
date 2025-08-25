@@ -3,6 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
+import wave
 
 def mi_funcion_sen (amp = 1, offset = 0, frec = 1, fase=0, N = 1000, frecADC = 1000):
     
@@ -71,7 +72,7 @@ def mi_funcion_ortogonalidad (f,g):
 def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     
     #defino el primer lado de la igualdad
-    _,xa = mi_funcion_sen(frec=a)
+    tt,xa = mi_funcion_sen(frec=a)
     _,xaa = mi_funcion_sen(frec=b)
     fa=2*xa*xaa
     
@@ -81,25 +82,46 @@ def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     fb=xb-xbb 
     
     #grafico
+    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+    fig.suptitle('ITEM 4')
+    
+    # First subplot
+    axes[0].set_title("2*sen(a)*sen(b)")
+    axes[0].plot(tt, fa, 'o:', color='m')
+    axes[0].set_xlabel('Tiempo [s]')
+    axes[0].set_ylabel('Amplitud [V]')
+    
+    # Second subplot
+    axes[1].set_title("cos(a-b)-cos(a+b)")
+    axes[1].plot(tt, fb, 'o:', color='b')
+    axes[1].set_xlabel('Tiempo [s]')
+    axes[1].set_ylabel('Amplitud [V]')
+    
+    # Third subplot
+    axes[2].set_title("Superposicion de graficos")
+    axes[2].plot(tt, fa, 'o:')
+    axes[2].plot(tt, fb, 'o:')
+    axes[2].set_xlabel('Tiempo [s]')
+    axes[2].set_ylabel('Amplitud [V]')
+    axes[2].legend()
+    
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.show()
+
+def mi_funcion_bonus():
+    spf = wave.open("sonido_tp.wav", "r")
+    
+    # Leer archivo WAV
+    signal = spf.readframes(-1)
+    signal = np.fromstring(signal, np.int16)
+    tt = np.linspace(start = 0, stop = 2.7, num = len(signal))
+    
     plt.figure()
-    plt.title('ITEM 4')
-    plt.subplot(1,3,1)
-    plt.plot(fa,'o:', color='m')
-    plt.xlabel('Tiempo [s]')
-    plt.ylabel('Amplitud [V]')
-    
-    
-    plt.subplot(1,3,2)
-    plt.plot(fb,'o:', color ='b')
-    plt.xlabel('Tiempo [s]')
-    plt.ylabel('Amplitud [V]')
-    
-    plt.subplot(1,3,3)
-    plt.plot(fa,'o:')
-    plt.xlabel('Tiempo [s]')
-    plt.ylabel('Amplitud [V]')
-    plt.plot(fb,'o:')
-       
-    
+    plt.title("Grafico del sonido...")
+    plt.xlabel("Tiempo [s]")
+    plt.plot(tt, signal)
+    plt.show()
+    print("Energia del sonido graficado = ", np.sum(signal**2)/1000, "kJ")
+
   
 
