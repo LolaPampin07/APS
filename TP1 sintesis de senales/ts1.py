@@ -65,7 +65,7 @@ plt.subplot(2,3,4)
 plt.title('Item 1d')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ttd,fc,'o:', color= 'orange')
+plt.plot(ttd,fd,'o:', color= 'orange')
 
 plt.subplot(2,3,5)
 plt.title('Item 1e')
