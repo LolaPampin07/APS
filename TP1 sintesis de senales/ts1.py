@@ -18,7 +18,7 @@ t0=1
 tta,fa=ts1.mi_funcion_sen(1,0,2000,0,N,frecADC)
 
 #b) Misma señal amplificada y desfazada en π/2.
-ttb,fb=ts1.mi_funcion_sen(2,0,2000,-np.pi/2,N,frecADC)
+ttb,fb=ts1.mi_funcion_sen(2,0,2000,np.pi/2,N,frecADC)
 
 #c) Misma señal modulada en amplitud por otra señal sinusoidal de la mitad de la frecuencia.
 ttc,fc=ts1.mi_funcion_item_C(1,0,2000,0,N,frecADC)
@@ -49,35 +49,35 @@ plt.subplot(2,3,1)
 plt.title('item 1a')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(tta, fa,'o:', color ='c')
+plt.plot(tta, fa,'o-', color ='c')
 
 plt.subplot(2,3,2)
 plt.title('Item 1b')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ttb,fb,'o:', color ='m')
+plt.plot(ttb,fb,'o-', color ='m')
 
 plt.subplot(2,3,3)
 plt.title('Item 1c')
-plt.plot(ttc,fc,'o:', color ='violet')
+plt.plot(ttc,fc,'o-', color ='violet')
 
 plt.subplot(2,3,4)
 plt.title('Item 1d')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ttd,fd,'o:', color= 'orange')
+plt.plot(ttd,fd,'o-', color= 'orange')
 
 plt.subplot(2,3,5)
 plt.title('Item 1e')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(tte,fe,'o:', color ='green')
+plt.plot(tte,fe,'o-', color ='green')
 
 plt.subplot(2,3,6)
 plt.title('Item 1f')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ff,'o:', color = 'y')
+plt.plot(ff,'o-', color = 'y')
 
 plt.show()
 plt.legend()
@@ -118,7 +118,6 @@ else:
 
 raa= signal.correlate(fa, fa)
 
-
 rab=signal.correlate(fa, fb)
 
 
@@ -139,32 +138,32 @@ plt.figure()
 plt.subplot(2,3,1)
 plt.title('autocorrelacion item a')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje,raa,'o:', color='r')
+plt.plot(eje,raa/max(raa),'o-', color='r')
 
 plt.subplot(2,3,2)
 plt.title('correlacion cruzada item a y b')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje,rab,'o:', color = 'y')
+plt.plot(eje,rab/max(rab),'o-', color = 'y')
 
 plt.subplot(2,3,3)
 plt.title('correlacion cruzada item a y c')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje, rac,'o:', color='c')
+plt.plot(eje, rac/max(rac),'o-', color='c')
 
 plt.subplot(2,3,4)
 plt.title('correlacion cruzada item a y d')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje, rad,'o:', color='g')
+plt.plot(eje, rad/max(rad),'o-', color='g')
 
 plt.subplot(2,3,5)
 plt.title('correlacion cruzada item a y e')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje, rae,'o:',color ='b')
+plt.plot(eje, rae/max(rae),'o-',color ='b')
 
 plt.subplot(2,3,6)
 plt.title('correlacion cruzada item a y f')
 plt.xlabel('# unidades de desplazamiento')
-plt.plot(eje, raf,'o:', color='m')
+plt.plot(eje, raf/max(raf),'o-', color='m')
 
 plt.show()
 plt.legend()
