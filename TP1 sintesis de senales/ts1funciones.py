@@ -87,20 +87,20 @@ def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     
     # First subplot
     axes[0].set_title("2*sen(a)*sen(b)")
-    axes[0].plot(tt, fa, 'o:', color='m')
+    axes[0].plot(tt, fa, 'o', color='m')
     axes[0].set_xlabel('Tiempo [s]')
     axes[0].set_ylabel('Amplitud [V]')
     
     # Second subplot
     axes[1].set_title("cos(a-b)-cos(a+b)")
-    axes[1].plot(tt, fb, 'o:', color='b')
+    axes[1].plot(tt, fb, 'x', color='b')
     axes[1].set_xlabel('Tiempo [s]')
     axes[1].set_ylabel('Amplitud [V]')
     
     # Third subplot
     axes[2].set_title("Superposicion de graficos")
-    axes[2].plot(tt, fa, 'o:')
-    axes[2].plot(tt, fb, 'o:')
+    axes[2].plot(tt, fa, 'o:', color='m')
+    axes[2].plot(tt, fb, 'x', color='b')
     axes[2].set_xlabel('Tiempo [s]')
     axes[2].set_ylabel('Amplitud [V]')
     axes[2].legend()

@@ -176,9 +176,7 @@ plt.legend()
 Demostrar la igualdad
 Mostrar que la igualdad se cumple con señales sinusoidales, considerando α=ω⋅t, el doble de β (Use la frecuencia que desee).
 """
-a=np.pi
-b=2*a
-ts1.mi_funcion_propTrigo(a,b) #llamo a la funcion y le paso 2 frecuencias en rad/s
+ts1.mi_funcion_propTrigo(np.pi,2*(np.pi)) #llamo a la funcion y le paso 2 frecuencias en rad/s
 
 
 
