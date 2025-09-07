@@ -83,34 +83,17 @@ plt.show()
 plt.legend()
 
 
-#------------------------------------Ejercicio 2---------------------------------------------------------------
-"""2) Verificar ortogonalidad entre la primera señal y las demás. """
+# %%2) Verificar ortogonalidad entre la primera señal y las demás. 
 #b
-if (ts1.mi_funcion_ortogonalidad(fa, fb)):
-    print ('la funcion del item a y la del item b son ortogonales')
-else:
-    print('la funcion del item a y la del item b NO son ortogonales')
+ts1.mi_funcion_ortogonalidad(fa, fb)
 #c
-if (ts1.mi_funcion_ortogonalidad(fa, fc)):
-    print ('la funcion del item a y la del item c son ortogonales')
-else:
-    print('la funcion del item a y la del item c NO son ortogonales')
+ts1.mi_funcion_ortogonalidad(fa, fc)
 #d
-if (ts1.mi_funcion_ortogonalidad(fa, fd)):
-    print ('la funcion del item a y la del item d son ortogonales')
-else:
-    print('la funcion del item a y la del item d NO son ortogonales')
+ts1.mi_funcion_ortogonalidad(fa, fd)
 #e
-if (ts1.mi_funcion_ortogonalidad(fa, fe)):
-    print ('la funcion del item a y la del item e son ortogonales')
-else:
-    print('la funcion del item a y la del item e NO son ortogonales')
+ts1.mi_funcion_ortogonalidad(fa, fe)
 #f
-if (ts1.mi_funcion_ortogonalidad(fa, ff)):
-    print ('la funcion del item a y la del item f son ortogonales')
-else:
-    print('la funcion del item a y la del item f NO son ortogonales')
-
+ts1.mi_funcion_ortogonalidad(fa, ff)
 #------------------------------------Ejercicio 3---------------------------------------------------------------
 """3) Graficar la autocorrelación de la primera señal y la correlación entre ésta y las demás.
     scipy tiene funcion de autocorrelacion --> obtener la serie de autocorrelacion

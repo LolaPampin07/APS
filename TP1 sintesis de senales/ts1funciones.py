@@ -12,8 +12,7 @@ def mi_funcion_sen (amp = 1, offset = 0, frec = 1, fase=0, N = 1000, frecADC = 1
     tt = np.arange(start = 0, stop = N*ts, step = ts)
 
     xx = amp * np.sin( 2 * np.pi * frec * tt + fase) + offset
-  
-       
+         
     return tt,xx
 def mi_funcion_cos (amp = 1, offset = 0, frec = 1, fase=0, N = 1000, frecADC = 1000):
     
@@ -64,11 +63,11 @@ def mi_funcion_item_G(N, ts, xx):
     print ('Potencia de la señal:', np.mean(xx**2))
     print ('Numero de muestras:', N)
 def mi_funcion_ortogonalidad (f,g):
-    valor=np.dot(f,g)
-    if (valor == 0):
-        return True
+    valor=np.dot(f,g) #producto interno punto a punto
+    if (valor < 1e-14):
+      print ('la funcion del item f y g son ortogonales')
     else: 
-        return False
+      print ('la funcion del item f y g NO son ortogonales')
 def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     
     #defino el primer lado de la igualdad
