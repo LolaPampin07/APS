@@ -72,7 +72,7 @@ def mi_funcion_ortogonalidad (f,g):
 def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     
     #defino el primer lado de la igualdad
-    tt,xa = mi_funcion_sen(frec=a)
+    _,xa = mi_funcion_sen(frec=a)
     _,xaa = mi_funcion_sen(frec=b)
     fa=2*xa*xaa
     
@@ -82,30 +82,29 @@ def mi_funcion_propTrigo(a=np.pi,b=np.pi/4):
     fb=xb-xbb 
     
     #grafico
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-    fig.suptitle('ITEM 4')
     
-    # First subplot
-    axes[0].set_title("2*sen(a)*sen(b)")
-    axes[0].plot(tt, fa, 'o:', color='m')
-    axes[0].set_xlabel('Tiempo [s]')
-    axes[0].set_ylabel('Amplitud [V]')
     
-    # Second subplot
-    axes[1].set_title("cos(a-b)-cos(a+b)")
-    axes[1].plot(tt, fb, 'o:', color='b')
-    axes[1].set_xlabel('Tiempo [s]')
-    axes[1].set_ylabel('Amplitud [V]')
+    plt.figure()
     
-    # Third subplot
-    axes[2].set_title("Superposicion de graficos")
-    axes[2].plot(tt, fa, 'o:')
-    axes[2].plot(tt, fb, 'o:')
-    axes[2].set_xlabel('Tiempo [s]')
-    axes[2].set_ylabel('Amplitud [V]')
-    axes[2].legend()
+    plt.subplot(1,3,1)
+    plt.title('Primer lado de la igualdad')
+    plt.plot(fa, 'x')
+    plt.xlabel('Muestras')   
+    plt.ylabel('Amplitud [V]')
     
-    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.subplot(1,3,2)
+    plt.title('Segundo lado de la igualdad')
+    plt.plot(fb,'o')
+    plt.xlabel('Muestras') 
+    plt.ylabel('Amplitud [V]')
+    
+    plt.subplot(1,3,3)
+    plt.title('Superposicion')
+    plt.plot(fa, 'x')
+    plt.plot(fb,'o')
+    plt.xlabel('Muestras')  
+    plt.ylabel('Amplitud [V]')
+    
     plt.show()
 
 def mi_funcion_bonus():

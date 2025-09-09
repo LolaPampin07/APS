@@ -17,12 +17,17 @@ C⋅dPdt+1R⋅P=Q
 
 Considere valores típicos de Compliance y Resistencia vascular
 """
-import ts1funciones as ts1
+# %% Librerias
+
+
+import ts1funciones2 as ts1
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sc
 from scipy import signal
 from scipy.signal import lfilter, unit_impulse
+
+# %% Declaracion de variables
 
 N=100
 frecADC=40000
@@ -30,19 +35,20 @@ t1=11
 t0=1
 
 
+n=2 #
+# %% Calculo de funciones
+
+
 def mi_funcion_y1 (x):
 
     y=np.zeros(N) #primero me armo mi array solucion y lo inicializo en 0
     
-    #tanto mi entrada como mi salida es causal ==> para todo subindice <0 mi array vale 0
-    for n in range(len(x)):
-        x_n   = x[n] if n >= 0 else 0
-        x_n1  = x[n-1] if n-1 >= 0 else 0
-        x_n2  = x[n-2] if n-2 >= 0 else 0
-        y_n1  = y[n-1] if n-1 >= 0 else 0
-        y_n2  = y[n-2] if n-2 >= 0 else 0
+    for n in range(2,len(x)):
+#tanto mi entrada como mi salida es causal ==> para todo subindice <0 mi array vale 0
+                
+        #implementacion del zero padding --> puedo demorar mi array --> analizo cuantos 0 tengo que poner antes // puedo arrancar mi solucion a partir de indice positivo
 
-        y[n] = (3e-2 * x_n + 5e-2 * x_n1 + 3e-2 * x_n2 + 1.5 * y_n1 - 0.5 * y_n2)
+        y[n] = (3e-2 * x[n] + 5e-2 * x[n-1] + 3e-2 * x[n-2] + 1.5 *y[n-1] - 0.5 * y[n-2])
     return y
 
 #Invoco las funciones del tp anterior
@@ -75,48 +81,59 @@ y5=mi_funcion_y1(fe)
 ff=ts1.mi_funcion_pulso(t0,t1,N,1)
 y6=mi_funcion_y1(ff)
 
-## Graficos item 1
+# %% Graficos item 1
+
 
 plt.figure()
 plt.subplot(2,3,1)
 plt.title('item 1a')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(tta, y1,'o:', color ='c')
+plt.plot(tta, fa,'x-', color ='b', label='entrada')
+plt.plot(tta, y1,'o-', color ='c', label='salida')
+plt.legend()
+
 
 plt.subplot(2,3,2)
 plt.title('Item 1b')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ttb,y2,'o:', color ='m')
+plt.plot(ttb,fb,'x-', color ='b', label='entrada')
+plt.plot(ttb,y2,'o-', color ='m', label='salida')
+plt.legend()
 
 plt.subplot(2,3,3)
 plt.title('Item 1c')
-plt.plot(ttc,y3,'o:', color ='violet')
+plt.xlabel('Tiempo [s]')
+plt.ylabel('Amplitud [V]')
+plt.plot(ttc,fc,'x-', color ='b', label='entrada')
+plt.plot(ttc,y3,'o-', color ='violet', label='salida')
+plt.legend()
 
 plt.subplot(2,3,4)
 plt.title('Item 1d')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(ttd,y4,'o:', color= 'orange')
+plt.plot(ttd,fd,'x-', color= 'b', label='entrada')
+plt.plot(ttd,y4,'o-', color= 'orange', label='salida')
+plt.legend()
 
 plt.subplot(2,3,5)
 plt.title('Item 1e')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(tte,y5,'o:', color ='green')
+plt.plot(tte,fe,'x-', color ='green', label='entrada')
+plt.plot(tte,y5,'o-', color ='green', label='salida')
+plt.legend()
 
 plt.subplot(2,3,6)
 plt.title('Item 1f')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud [V]')
-plt.plot(y6,'o:', color = 'y')
-
-plt.show()
+plt.plot(ff,'x-', color = 'b', label='entrada')
+plt.plot(y6,'o-', color = 'y', label='salida')
 plt.legend()
-
-######################################################
-
+# %% Item 1b calculo de funciones
 #Hallar la respuesta al impulso
 
 def mi_funcion_resp_imp (a,b):
@@ -141,43 +158,70 @@ yy5=np.convolve(fe, h)
 
 yy6=np.convolve(ff, h)
 
+# %% Graficos item 1b
 
-plt.figure()
+t_conv1 = np.arange(len(yy1)) / frecADC
+t_conv2 = np.arange(len(yy2)) / frecADC
+t_conv3 = np.arange(len(yy3)) / frecADC
+t_conv4 = np.arange(len(yy4)) / frecADC
+t_conv5 = np.arange(len(yy5)) / frecADC
+dt = 1/frecADC
+t = np.arange(len(fa)) * dt
+
+
+#grafico mi salida
+plt.figure(figsize=(20,20))
 plt.subplot(2,3,1)
 plt.title('item 1a')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy1,'o:', color ='c')
+plt.xlim(0,max (tta))
+plt.ylabel('Amplitud')
+plt.plot(t_conv1,yy1,'o:', color ='c', label='salida')
+plt.plot(tta,fa,'x-', color = 'b', label='entrada')
+plt.legend()
 
 plt.subplot(2,3,2)
 plt.title('Item 1b')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy2,'o:', color ='m')
+plt.xlim(0,max (ttb))
+plt.ylabel('Amplitud')
+plt.plot(t_conv2, yy2,'o:', color ='m', label='salida')
+plt.plot(ttb,fb,'x-', color = 'b', label='entrada')
+plt.legend()
 
 plt.subplot(2,3,3)
 plt.title('Item 1c')
-plt.plot(yy3,'o:', color ='violet')
+plt.xlabel('Tiempo [s]')
+plt.xlim(0,max (ttc))
+plt.ylabel('Amplitud')
+plt.plot(t_conv3,yy3,'o:', color ='violet', label='salida')
+plt.plot(ttc,fc,'x-', color = 'b', label='entrada')
+plt.legend()
 
 plt.subplot(2,3,4)
 plt.title('Item 1d')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy4,'o:', color= 'orange')
+plt.xlim(0,max (ttd))
+plt.ylabel('Amplitud')
+plt.plot(t_conv4,yy4,'o:', color= 'orange', label='salida')
+plt.plot(ttd,fd,'x-', color = 'b', label='entrada')
+plt.legend()
 
 plt.subplot(2,3,5)
 plt.title('Item 1e')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy5,'o:', color ='green')
+plt.xlim(0,max (tte))
+plt.ylabel('Amplitud')
+plt.plot(t_conv5,yy5,'o:', color ='green', label='salida')
+plt.plot(tte,fe,'x-', color = 'b', label='entrada')
+plt.legend()
 
 plt.subplot(2,3,6)
 plt.title('Item 1f')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy6,'o:', color = 'y')
-
-plt.show()
+plt.ylabel('Amplitud')
+plt.plot(yy6,'o:', color = 'y', label='salida')
+plt.plot(ff,'x-', color = 'b', label='entrada')
 plt.legend()
 
 
@@ -186,61 +230,36 @@ y[n]=x[n]+3⋅x[n−10]
 y[n]=x[n]+3⋅y[n−10]
 """
 
-def mi_funcion_y2 (x):
-    y=np.zeros(N) #primero me armo mi array solucion y lo inicializo en 0
-    for n in range(len(x)): 
-        x_n  = x[n-10] if n >= 10 else 0
-        y[n] = x[n]+3*x_n
-    return y
-
-#calculo mi fun directamente
-y2a =mi_funcion_y2(fa)
-
+# %% Item 2
 
 #calculo mi fun a traves de la resp al impulso
 b = [1,0,0,0,0,0,0,0,0,0,3]     
 a = [1.0]        
 h=mi_funcion_resp_imp(a,b)
-yy2a = np.convolve(y2a, h)
+y2a = np.convolve(fa, h, mode='same')
 
-plt.figure()
-plt.subplot(1,2,1)
-plt.title('Calculo directo y2')
+plt.figure(figsize=(20,20))
+plt.subplot(2,1,1)
+plt.title('item 2a')
 plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(y2a,'o:', color = 'c')
-
-plt.subplot(1,2,2)
-plt.title('"Calculo por h"')
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy2a,'o:', color = 'm')
-
-
-def mi_funcion_y3 (x):
-    y=np.zeros(N) #primero me armo mi array solucion y lo inicializo en 0  
-    for n in range(len(x)):    
-        y[n] = x[n]+y[n-10]
-    return y
-
-y2b=mi_funcion_y3(fa)
+plt.xlim(0,max(tta))
+plt.ylabel('Amplitud')
+plt.plot(tta,y2a,'o:', color ='c', label='salida')
+plt.plot(tta,fa,'x-', color = 'b', label='entrada')
+plt.legend()
 
 b = [1.0]      # Coeficientes de entrada (x)
 a = [1,0,0,0,0,0,0,0,0,0,-3]        # Coeficientes de salida (y)
 
 h=mi_funcion_resp_imp(a,b)
-yy2b = np.convolve(y2b, h)
+y2b = np.convolve(fa, h, mode='valid')
 
-plt.figure()
-plt.subplot(1,2,1)
-plt.title('Calculo directo y2')
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(y2b,'o:', color = 'c')
-
-plt.subplot(1,2,2)
-plt.title('"Calculo por h"')
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud [V]')
-plt.plot(yy2b,'o:', color = 'm')
+plt.subplot(2,1,2)
+plt.title('item 2a')
+plt.xlabel('#Nro de muestras')
+plt.xlim(0,max(tta))
+plt.ylabel('Amplitud')
+plt.plot(tta,y2b,'o:', color ='c', label='salida')
+plt.plot(tta,fa,'x-', color = 'b', label='entrada')
+plt.legend()
 
