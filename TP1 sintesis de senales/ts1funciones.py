@@ -54,8 +54,8 @@ def mi_funcion_item_D (amp = 1, offset = 0, frec = 1, fase=0, N = 1000, frecADC 
     valor_corte= amp*0.75 #75% de la amp
     xx=np.clip(xx,-valor_corte,valor_corte)    
     return tt,xx
-def mi_funcion_pulso (t0=0,t1=10,N=20, h=1): #t0 es el tiempo donde comienza el pulso, t1 donde finaliza, N mi cantidad de muestras, h la altura de mi pulso
-    X=np.zeros(N)
+def mi_funcion_pulso (t0=0,t1=10,N=20, h=1.5,os=-0.5):
+    X=np.ones(N) * os
     X[t0:t1]=h
     return X
 def mi_funcion_item_G(N, ts, xx):

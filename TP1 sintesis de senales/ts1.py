@@ -30,7 +30,7 @@ ttd,fd=ts1.mi_funcion_item_D(1,0,2000,0,N,frecADC)
 tte,fe=ts1.mi_funcion_cuadrada(0, 4000, 0, N, frecADC = frecADC)
 
 #f) Un pulso rectangular de 10ms. --> NO HAY FRECUENCIA UN SOLO 
-ff=ts1.mi_funcion_pulso(t0,t1,N,1)
+ff=ts1.mi_funcion_pulso(0,10,N, 1.5,-0.5)
 
 #g) En cada caso indique tiempo entre muestras, número de muestras y potencia.
 ts=1/frecADC
