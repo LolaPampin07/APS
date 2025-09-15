@@ -142,10 +142,15 @@ x1z=np.concat((x1,z))
 x2z=np.concat((x2,z))
 x3z=np.concat((x3,z))
 
-plt.figure()
-plt.plot(x1z,'o', label='zero padding')
-plt.plot(x2z,'o', label='zero padding')
-plt.plot(x3z,'o', label='zero padding')
+plt.figure(figsize=(20,10))
+plt.title('zeropadding')
+plt.plot(x1z,'o', label='x1')
+plt.plot(x2z,'o', label='x2')
+plt.plot(x3z,'o', label='x3')
+plt.xlabel('Tiempo [s]')
+plt.ylabel('Amplitud')
+plt.grid()
+plt.legend()
 
 #el grafico tiene frecuencia muy alta ==> me da puntos porque no esta interpolado
 
