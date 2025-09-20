@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# %%librerias
+# %%librerias + variables
 
 
 import numpy as np
@@ -7,97 +7,85 @@ import matplotlib.pyplot as plt
 from scipy import signal
 from numpy.fft import fft
 
-# %% Declaracion de variables
+# declaracion de varibles
 
-N = 1000
-fs = N
-df = fs / N #resolucion espectral = [[1/(s*muestras)]
-ts = 1 / fs
-ff = (N/4)*df #eje en frecuencia ==> frecuencia * resolucion espectral
-a0=2
-snr=3
-Omega0=np.pi/2 #fs/4
-fr=np.random.uniform(-2,2,None)
-Omega1=Omega0+fr*np.pi*2/N
+N = 1000 #cantidad de muestras
+fs = N #frecuencia de muestreo
+df = fs/N # Resolucion temporal
+a0 = 2 #amplitud
+realizaciones = 200 # Sirve para parametrizar la cantidad de realizaciones de sampling ->muestras que vamos a tomar de la frecuencia
+omega_0 = np.pi / 2 # fs/4 -> mitad de banda digital
+fr = np.random.uniform(-2,2) #variable aleatoria de distribucion normal para la frecuencia
+omega_1 = omega_0 + fr * 2 * np.pi / N
+nn = np.arange(N) # Vector dimensional de muestras
+ff = np.arange(N) # Vector en frecuencia al escalar las muestras por la resolucion espectral
 
-# %% Mi funcion seno
+#signal to noise ratio en dB segun pide la consigna
+SNR3=3
+SNR10 = 10
 
 
-def sen(ff, nn, amp=1, dc=0, ph=0, fs=2):
+# %% FUNCION SENOIDAL
+def mi_funcion_sen(frecuencia, nn, amplitud = 1, offset = 0, fase = 0, fs = 2):   
+
     N = np.arange(nn)
+    
     t = N / fs
-    x = dc + amp * np.sin(2 * np.pi * ff * t + ph)
+
+    x = amplitud * np.sin(2 * np.pi * frecuencia * t + fase) + offset
+
     return t, x
 
-t1, x1 = sen(ff=(N / 4) * df, nn=N, fs=fs)
+t1,s1 = mi_funcion_sen(frecuencia = omega_1, nn = N, fs = fs, amplitud = a0) # Funcion senoidal con frecuencia aleatoria
+
+# %%RUIDO
+
+pot_ruido3 = a0*2 / (2*10*(SNR3/10))
+print(f"Potencia del SNR 3dB -> {pot_ruido3:.3f}")
+ruido3 = np.random.normal(0, np.sqrt(pot_ruido3), N) # Vector
+var_ruido3 = np.var(ruido3)
+print(f"Potencia de ruido 3dB -> {var_ruido3:.3f}")
+
+pot_ruido10 = a0*2 / (2*10*(SNR10/10))
+print(f"Potencia del SNR 10dB-> {pot_ruido10:.3f}")
+ruido10 = np.random.normal(0, np.sqrt(pot_ruido10), N) # Vector
+var_ruido10 = np.var(ruido10)
+print(f"Potencia de ruido 10dB -> {var_ruido10:.3f}")
+
+
+# Modelo de señal --> señal limpia + ruido
+x1 = s1 + ruido3  
+x2 = s1 + ruido10  
 
 plt.figure()
-plt.plot(x1)
-
-# %%Transformadas
-
-
-# FFTs
-X1 = fft(x1)
-X1abs = np.abs(X1)
-X1ang = np.angle(X1)
-
-plt.figure()
-plt.plot(X1abs,'o', label='|X|')
-plt.plot(X1ang,'x', label='angulo X')
-
-Ff=np.arange(N)*df #mi eje x en hz
-
-
-plt.figure()
-plt.plot(Ff, 20*np.log10(X1abs), 'x', label='X N/4 abs en dB')
-
-#piso de ruido tiene que subir a la potencia que le preestablesco en na
-
-# %% Ruido
-def mi_funcion_ruido (t,x,snr,a0):
-    dev_std=10**(-(snr-10*np.log10((a0**2)/2)))
-    # Ruido Blanco Gaussiano
-    ruido = np.random.normal(0, dev_std, size=t.shape)
-    # Señal con ruido
-    senoidal_ruido = x + ruido
-    plt.figure()
-    plt.xlim(0,20)
-    plt.title('senal con ruido')
-    plt.plot(senoidal_ruido,'x:', label='mi senal con ruido')
-    plt.plot(x,'o-', label='mi senal sin ruido')
-    plt.legend()
-    return senoidal_ruido
-
-
-xr=mi_funcion_ruido(t1,x1,snr,a0)
-# FFTs de mi senal con ruido
-XR = fft(xr)
-XRabs = np.abs(XR)
-XRang = np.angle(XR)
-
-"""
-
-plt.figure()
-plt.plot(XRabs,'o', label='|X|')
-plt.plot(XRang,'x', label='angulo X')
-
-"""
-Ff=np.arange(N)*df #mi eje x en hz
-plt.figure()
-plt.plot(Ff, 20*np.log10(XRabs), 'x', label='senal + ruido en dB')
-plt.plot(Ff, 20*np.log10(X1abs), 'o', label='senal sin ruido en dB')
-plt.xlim([0, fs/2]) 
-plt.title('FFT mi senal con ruido')
-plt.xlabel('Frecuencia (Hz)')
-plt.ylabel('Amplitud [dB]')
+plt.plot(x1,'x',label='senal + 3dB ruido')
+plt.plot(x2,'o',label='senal + 10dB ruido')
 plt.legend()
 plt.show()
 
-"""
-N=1000
-k0= [N/4, N+0.25, N/4+0.5]
-fs=N
-fr=0
+# %%FFT
 
-"""
+X1 = (1/N)*fft(x1) # Multiplico por 1/N para calibrarlo --> llevar el piso de ruido a cero
+
+X2 = (1/N)*fft(x2)# Multiplico por 1/N para calibrarlo --> llevar el piso de ruido a cero
+
+
+# GRAFICO
+plt.figure(figsize=(20,20))
+
+# Grafico X1 en db
+
+plt.title("Densidades espectrales de potencia (PDS) en db")
+plt.xlabel('Frecuencia (Hz)')
+plt.ylabel('PDS [db]')
+plt.xlim([0, fs/2]) # En este caso fs = N, pero pongo fs para saber que va eso y no va siempre N
+# plt.plot(ff, np.log10(np.abs(S1)**2) * 10, label = 'S1') # En este caso es un db de tension
+# plt.plot(ff, np.log10(np.abs(R)**2) * 10, label = 'Ruido')
+plt.plot(ff, np.log10(2*np.abs(X1)**2 * 10), label = 'X1')  # Densidad espectral de potencia
+plt.plot(ff, np.log10(2*np.abs(X2)**2* 10), label = 'X2')
+plt.legend()
+plt.show()
+
+# En ruido es poco entonces se "tapa", no me juega en la suma
+# Estar 250dB por debajo, es estar 25 ordenes de potencia por debajo
+# Todo el piso de ruido es tapado por la energia, al ser esta tan tan grande (casi infinitamente mas grande), lo tapa al ruido.
