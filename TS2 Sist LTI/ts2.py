@@ -33,8 +33,6 @@ N=100
 frecADC=40000
 t1=11
 t0=1
-
-
 n=2 #
 # %% Calculo de funciones
 
@@ -140,6 +138,14 @@ def mi_funcion_resp_imp (a,b):
 
     d = unit_impulse(3*N)
     h = lfilter(b, a, d)
+    
+    #grafico la respuesta al impulso
+    plt.figure()
+    plt.scatter(np.arange(0,3*N,1),h)
+    plt.title('respuesta al impuso h')
+    plt.legend()
+    plt.show()
+    
     return h
 
 b= [0.03, 0.05, 0.03]      # Coeficientes de entrada (x)
@@ -224,8 +230,6 @@ plt.plot(yy6,'o:', color = 'y', label='salida')
 plt.plot(ff,'x-', color = 'b', label='entrada')
 plt.legend()
 
-
-
 # %% Item 2
 
 """
@@ -238,40 +242,39 @@ y[n]=x[n]+3⋅y[n−10]
 b = [1,0,0,0,0,0,0,0,0,0,3]     
 a = [1.0]        
 h=mi_funcion_resp_imp(a,b)
-y2a = np.convolve(fa, h)
 
+
+y2a = np.convolve(fa, h)
 t_conv2a = np.arange(len(y2a)) / frecADC
 
 
-plt.figure(figsize=(20,20))
-plt.subplot(2,1,1)
+#grafico item 2a
+plt.figure()
 plt.title('item 2a')
 plt.xlabel('Tiempo [s]')
 plt.xlim(0, max(tta))
 plt.ylabel('Amplitud')
 plt.plot(t_conv2a,y2a,'o:', color ='c', label='salida')
-plt.plot(h,'x-', color ='r', label='h')
 plt.plot(tta,fa,'x-', color = 'b', label='entrada')
 plt.legend()
 
+
+#item 2b
 b = [1.0]      # Coeficientes de entrada (x)
 a = [1,0,0,0,0,0,0,0,0,0,-3]        # Coeficientes de salida (y)
 
 h=mi_funcion_resp_imp(a,b)
-y2b = np.convolve(fa, h)
 
+y2b = np.convolve(fa, h)
 t_conv2b = np.arange(len(y2b)) / frecADC
 
-plt.subplot(2,1,2)
+#grafico item 2b
+plt.figure()
 plt.title('item 2a')
 plt.xlabel('Tiempo [s]')
 plt.ylabel('Amplitud')
-plt.xlim(0, max(tta))
+#plt.xlim(0, max(tta))
 plt.plot(t_conv2,y2b,'o:', color ='c', label='salida')
-
 plt.plot(tta,fa,'x-', color = 'b', label='entrada')
 plt.legend()
 
-
-plt.figure()
-plt.plot(h,'x-', color ='r', label='h')
