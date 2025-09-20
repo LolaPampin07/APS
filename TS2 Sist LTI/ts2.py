@@ -134,7 +134,7 @@ plt.legend()
 # %% Item 1b calculo de funciones
 #Hallar la respuesta al impulso
 
-def mi_funcion_resp_imp (a,b):
+def mi_funcion_resp_imp (a,b, item):
 
     d = unit_impulse(3*N)
     h = lfilter(b, a, d)
@@ -151,7 +151,7 @@ def mi_funcion_resp_imp (a,b):
 b= [0.03, 0.05, 0.03]      # Coeficientes de entrada (x)
 a = [1.0, -1.5, 0.5]        # Coeficientes de salida (y)
 
-h=mi_funcion_resp_imp(a,b)
+h=mi_funcion_resp_imp(a,b, 'item 1b')
 yy1=np.convolve(fa, h)
 
 yy2=np.convolve(fb, h)
@@ -241,7 +241,7 @@ y[n]=x[n]+3⋅y[n−10]
 #calculo mi fun a traves de la resp al impulso
 b = [1,0,0,0,0,0,0,0,0,0,3]     
 a = [1.0]        
-h=mi_funcion_resp_imp(a,b)
+h=mi_funcion_resp_imp(a,b, 'item 2a')
 
 
 y2a = np.convolve(fa, h)
@@ -263,7 +263,7 @@ plt.legend()
 b = [1.0]      # Coeficientes de entrada (x)
 a = [1,0,0,0,0,0,0,0,0,0,-3]        # Coeficientes de salida (y)
 
-h=mi_funcion_resp_imp(a,b)
+h=mi_funcion_resp_imp(a,b, 'item 2b')
 
 y2b = np.convolve(fa, h)
 t_conv2b = np.arange(len(y2b)) / frecADC
