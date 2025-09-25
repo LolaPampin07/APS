@@ -136,13 +136,15 @@ plt.legend()
 
 def mi_funcion_resp_imp (a,b, item):
 
-    d = unit_impulse(N)
+    d = unit_impulse(N*3)
     h = lfilter(b, a, d)
     
     #grafico la respuesta al impulso
     plt.figure()
-    plt.scatter(np.arange(0,N,1),h)
+    plt.scatter(np.arange(0,N*3,1),h)
     plt.title('respuesta al impuso h')
+    plt.ylabel('h(n)')
+    plt.xlabel('muestras')
     plt.legend()
     plt.show()
     
