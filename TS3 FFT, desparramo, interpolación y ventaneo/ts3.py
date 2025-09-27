@@ -37,7 +37,7 @@ from numpy.fft import fft
 # Variables
 N=1000
 mbw=N/4 #mitad de banda digital
-k0= [mbw, mbw + 0.75, mbw + 1/2]
+k0= [mbw, mbw + 0.25, mbw + 0.5]
 fs=N
 df = fs / N #resolucion espectral = [[1/(s*muestras)]
 f0=np.dot(k0,df)
@@ -55,16 +55,16 @@ t3, x3 = sen(ff=f0[2], nn=N, fs=fs)
 
 
 #Graficos senoidales
-plt.figure()
-plt.title('Señales sinusoidales')
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud')
-plt.plot(t1,x1,'x',label='Frecuencia'+str(f0[0]))
-plt.plot(t2,x2,'x',label='Frecuencia'+str(f0[1]))
-plt.plot(t3,x3,'o',label='Frecuencia'+str(f0[2]))
-plt.legend()
-plt.grid()
-plt.show()
+# plt.figure()
+# plt.title('Señales sinusoidales')
+# plt.xlabel('Tiempo [s]')
+# plt.ylabel('Amplitud')
+# plt.plot(t1,x1,'x',label='Frecuencia'+str(f0[0]))
+# plt.plot(t2,x2,'x',label='Frecuencia'+str(f0[1]))
+# plt.plot(t3,x3,'o',label='Frecuencia'+str(f0[2]))
+# plt.legend()
+# plt.grid()
+# plt.show()
 
 # %%Calculo FFTs
 
@@ -86,7 +86,20 @@ PDS2 = np.abs(X2)**2
 PDS3 = np.abs(X3)**2
 
 Ff=np.arange(N)*df #mi eje x en hz
-plt.figure()
+plt.figure(figsize=(20,20))
+plt.plot(Ff, PDS1, 'x', label='PDS f= '+str(f0[0]))
+plt.plot(Ff, PDS2, 'o', label='PDS f= '+str(f0[1]))
+plt.plot(Ff, PDS3, '+', label='PDS f= '+str(f0[2]))
+plt.xlim([0, fs/2])
+plt.title('FFT')
+plt.xlabel('Frecuencia [Hz]')
+plt.ylabel('PDS [Watt]')
+plt.grid()
+plt.legend()
+
+
+Ff=np.arange(N)*df #mi eje x en hz
+plt.figure(figsize=(20,20))
 plt.plot(Ff, np.log10(PDS1)*10, 'x', label='PDS f= '+str(f0[0]))
 plt.plot(Ff, np.log10(PDS2)*10, 'o', label='PDS f= '+str(f0[1]))
 plt.plot(Ff, np.log10(PDS3)*10, '+', label='PDS f= '+str(f0[2]))
@@ -145,15 +158,15 @@ x1z=np.concat((x1,z))
 x2z=np.concat((x2,z))
 x3z=np.concat((x3,z))
 
-plt.figure(figsize=(20,10))
-plt.title('zeropadding')
-plt.plot(x1z,'o', label='x1')
-plt.plot(x2z,'o', label='x2')
-plt.plot(x3z,'o', label='x3')
-plt.xlabel('Tiempo [s]')
-plt.ylabel('Amplitud')
-plt.grid()
-plt.legend()
+# plt.figure(figsize=(20,10))
+# plt.title('zeropadding')
+# plt.plot(x1z,'o', label='x1')
+# plt.plot(x2z,'o', label='x2')
+# plt.plot(x3z,'o', label='x3')
+# plt.xlabel('Tiempo [s]')
+# plt.ylabel('Amplitud')
+# plt.grid()
+# plt.legend()
 
 #el grafico tiene frecuencia muy alta ==> me da puntos porque no esta interpolado
 
@@ -168,30 +181,35 @@ X2zabs=np.abs(X2z)
 X3z=fft(x3z)
 X3zabs=np.abs(X3z)
 
+PDS1z = np.abs(X1z)**2
+PDS2z = np.abs(X2z)**2
+PDS3z = np.abs(X3z)**2
+
 
 plt.figure(figsize=(20,20))
+plt.suptitle("PDS ZERO PADDING")
 plt.subplot(3,1,1)
-plt.plot(Ffp,20*np.log10(X1zabs),'o', label='|X1| zero padding')
-plt.plot(Ff,20*np.log10(X1abs),'x', label='|X1| sin padding')
+plt.plot(Ffp,np.log10(PDS1z)*10,'o', label='PDS x1 zero padding')
+plt.plot(Ff,10*np.log10(PDS1),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
-plt.ylabel('Amplitud [dB]')
+plt.ylabel('Potencia [dB]')
 plt.grid()
 
 plt.subplot(3,1,2)
-plt.plot(Ffp,20*np.log10(X2zabs),'o', label='|X2| zero padding')
-plt.plot(Ff,20*np.log10(X2abs),'x', label='|X2| sin padding')
+plt.plot(Ffp,np.log10(PDS2z)*10,'o', label='PDS x1 zero padding')
+plt.plot(Ff,10*np.log10(PDS2),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
-plt.ylabel('Amplitud [dB]')
+plt.ylabel('Potencia [dB]')
 plt.grid()
 
 plt.subplot(3,1,3)
-plt.plot(Ffp,20*np.log10(X3zabs),'o', label='|X3| zero padding')
-plt.plot(Ff,20*np.log10(X3abs),'x', label='|X3| sin padding')
+plt.plot(Ffp,np.log10(PDS3z)*10,'o', label='PDS x1 zero padding')
+plt.plot(Ff,10*np.log10(PDS3),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
-plt.ylabel('Amplitud [dB]')
+plt.ylabel('Potencia [dB]')
 plt.grid()
 
 
