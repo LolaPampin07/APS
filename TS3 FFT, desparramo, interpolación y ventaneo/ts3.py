@@ -37,7 +37,7 @@ from numpy.fft import fft
 # Variables
 N=1000
 mbw=N/4 #mitad de banda digital
-k0= [mbw, mbw + 0.25, mbw + 1/2]
+k0= [mbw, mbw + 0.75, mbw + 1/2]
 fs=N
 df = fs / N #resolucion espectral = [[1/(s*muestras)]
 f0=np.dot(k0,df)
@@ -55,16 +55,16 @@ t3, x3 = sen(ff=f0[2], nn=N, fs=fs)
 
 
 #Graficos senoidales
-# plt.figure()
-# plt.title('Señales sinusoidales')
-# plt.xlabel('Tiempo [s]')
-# plt.ylabel('Amplitud')
-# plt.plot(t1,x1,'x',label='Frecuencia'+str(f0[0]))
-# plt.plot(t2,x2,'x',label='Frecuencia'+str(f0[1]))
-# plt.plot(t3,x3,'o',label='Frecuencia'+str(f0[2]))
-# plt.legend()
-# plt.grid()
-# plt.show()
+plt.figure()
+plt.title('Señales sinusoidales')
+plt.xlabel('Tiempo [s]')
+plt.ylabel('Amplitud')
+plt.plot(t1,x1,'x',label='Frecuencia'+str(f0[0]))
+plt.plot(t2,x2,'x',label='Frecuencia'+str(f0[1]))
+plt.plot(t3,x3,'o',label='Frecuencia'+str(f0[2]))
+plt.legend()
+plt.grid()
+plt.show()
 
 # %%Calculo FFTs
 
@@ -81,16 +81,19 @@ X3 = fft(x3)
 X3abs = np.abs(X3)
 X3ang = np.angle(X3)
 
+PDS1 = np.abs(X1)**2
+PDS2 = np.abs(X2)**2
+PDS3 = np.abs(X3)**2
 
 Ff=np.arange(N)*df #mi eje x en hz
 plt.figure()
-plt.plot(Ff, 20*np.log10(X1abs), 'x', label='|X1| f= '+str(f0[0]))
-plt.plot(Ff, 20*np.log10(X2abs), 'o', label='|X2| f= '+str(f0[1]))
-plt.plot(Ff, 20*np.log10(X3abs), '+', label='|X3| f= '+str(f0[2]))
+plt.plot(Ff, np.log10(PDS1)*10, 'x', label='PDS f= '+str(f0[0]))
+plt.plot(Ff, np.log10(PDS2)*10, 'o', label='PDS f= '+str(f0[1]))
+plt.plot(Ff, np.log10(PDS3)*10, '+', label='PDS f= '+str(f0[2]))
 plt.xlim([0, fs/2])
 plt.title('FFT')
 plt.xlabel('Frecuencia [Hz]')
-plt.ylabel('Amplitud [dB]')
+plt.ylabel('PDS [dB]')
 plt.grid()
 plt.legend()
 
