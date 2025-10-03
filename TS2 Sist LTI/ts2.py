@@ -138,22 +138,24 @@ def mi_funcion_resp_imp (a,b, item):
 
     d = unit_impulse(N*3)
     h = lfilter(b, a, d)
-    
-    #grafico la respuesta al impulso
-    plt.figure()
-    plt.scatter(np.arange(0,N*3,1),h)
-    plt.title('respuesta al impuso h')
-    plt.ylabel('h(n)')
-    plt.xlabel('muestras')
-    plt.legend()
-    plt.show()
-    
+
     return h
 
 b= [0.03, 0.05, 0.03]      # Coeficientes de entrada (x)
 a = [1.0, -1.5, 0.5]        # Coeficientes de salida (y)
 
 h=mi_funcion_resp_imp(a,b, 'item 1b')
+
+#grafico la respuesta al impulso
+plt.figure()
+plt.scatter(np.arange(0,N*3,1),h)
+plt.xlim((0,20))
+plt.title('respuesta al impuso h')
+plt.ylabel('h(n)')
+plt.xlabel('muestras')
+plt.legend()
+plt.show()   
+
 yy1=np.convolve(fa, h)
 
 yy2=np.convolve(fb, h)
@@ -245,6 +247,16 @@ b = [1,0,0,0,0,0,0,0,0,0,3]
 a = [1.0]        
 h=mi_funcion_resp_imp(a,b, 'item 2a')
 
+#grafico la respuesta al impulso
+plt.figure()
+plt.scatter(np.arange(0,N*3,1),h)
+plt.xlim((0,100))
+plt.title('respuesta al impuso h')
+plt.ylabel('h(n)')
+plt.xlabel('muestras')
+plt.legend()
+plt.show() 
+
 
 y2a = np.convolve(fa, h)
 t_conv2a = np.arange(len(y2a)) / frecADC
@@ -266,6 +278,16 @@ b = [1.0]      # Coeficientes de entrada (x)
 a = [1,0,0,0,0,0,0,0,0,0,-3]        # Coeficientes de salida (y)
 
 h=mi_funcion_resp_imp(a,b, 'item 2b')
+
+#grafico la respuesta al impulso
+plt.figure()
+plt.scatter(np.arange(0,N*3,1),h)
+plt.xlim((150,300))
+plt.title('respuesta al impuso h')
+plt.ylabel('h(n)')
+plt.xlabel('muestras')
+plt.legend()
+plt.show() 
 
 y2b = np.convolve(fa, h)
 t_conv2b = np.arange(len(y2b)) / frecADC
