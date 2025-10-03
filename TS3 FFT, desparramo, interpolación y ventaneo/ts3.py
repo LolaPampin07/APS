@@ -53,6 +53,13 @@ t1, x1 = sen(ff=f0[0], nn=N, fs=fs)
 t2, x2 = sen(ff=f0[1], nn=N, fs=fs)
 t3, x3 = sen(ff=f0[2], nn=N, fs=fs)
 
+# potx1=np.mean(x1**2)
+# potx2=np.mean(x2**2)
+# potx3=np.mean(x3**2)
+
+# x1=x1/potx1
+# x2=x2/potx2
+# x3=x3/potx3
 
 #Graficos senoidales
 # plt.figure()
@@ -87,9 +94,9 @@ PDS3 = np.abs(X3)**2
 
 Ff=np.arange(N)*df #mi eje x en hz
 plt.figure(figsize=(20,20))
-plt.plot(Ff, PDS1, 'x', label='PDS f= '+str(f0[0]))
-plt.plot(Ff, PDS2, 'o', label='PDS f= '+str(f0[1]))
-plt.plot(Ff, PDS3, '+', label='PDS f= '+str(f0[2]))
+plt.plot(Ff, PDS1*(1/N), 'x', label='PDS f= '+str(f0[0]))
+plt.plot(Ff, PDS2*(1/N), 'o', label='PDS f= '+str(f0[1]))
+plt.plot(Ff, PDS3*(1/N), '+', label='PDS f= '+str(f0[2]))
 plt.xlim([0, fs/2])
 plt.title('FFT')
 plt.xlabel('Frecuencia [Hz]')
@@ -97,18 +104,18 @@ plt.ylabel('PDS [Watt]')
 plt.grid()
 plt.legend()
 
-
 Ff=np.arange(N)*df #mi eje x en hz
 plt.figure(figsize=(20,20))
-plt.plot(Ff, np.log10(PDS1)*10, 'x', label='PDS f= '+str(f0[0]))
-plt.plot(Ff, np.log10(PDS2)*10, 'o', label='PDS f= '+str(f0[1]))
-plt.plot(Ff, np.log10(PDS3)*10, '+', label='PDS f= '+str(f0[2]))
+plt.plot(Ff, np.log10(PDS1*(1/N))*10, 'x', label='PDS f= '+str(f0[0]))
+plt.plot(Ff, np.log10(PDS2*(1/N))*10, 'o', label='PDS f= '+str(f0[1]))
+plt.plot(Ff, np.log10(PDS3*(1/N))*10, '+', label='PDS f= '+str(f0[2]))
 plt.xlim([0, fs/2])
 plt.title('FFT')
 plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('PDS [dB]')
 plt.grid()
 plt.legend()
+
 
 # %% Parseval
 
@@ -189,7 +196,7 @@ PDS3z = np.abs(X3z)**2
 plt.figure(figsize=(20,20))
 plt.suptitle("PDS ZERO PADDING")
 plt.subplot(3,1,1)
-plt.plot(Ffp,np.log10(PDS1z)*10,'o', label='PDS x1 zero padding')
+plt.plot(Ffp,np.log10(PDS1z*(1/N))*10,'o', label='PDS x1 zero padding')
 plt.plot(Ff,10*np.log10(PDS1),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
@@ -197,29 +204,18 @@ plt.ylabel('Potencia [dB]')
 plt.grid()
 
 plt.subplot(3,1,2)
-plt.plot(Ffp,np.log10(PDS2z)*10,'o', label='PDS x1 zero padding')
-plt.plot(Ff,10*np.log10(PDS2),'x', label='PDS x1 sin padding')
+plt.plot(Ffp,np.log10(PDS2z*(1/N))*10,'o', label='PDS x1 zero padding')
+plt.plot(Ff,10*np.log10(PDS2*(1/N)),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('Potencia [dB]')
 plt.grid()
 
 plt.subplot(3,1,3)
-plt.plot(Ffp,np.log10(PDS3z)*10,'o', label='PDS x1 zero padding')
-plt.plot(Ff,10*np.log10(PDS3),'x', label='PDS x1 sin padding')
+plt.plot(Ffp,np.log10(PDS3z*(1/N))*10,'o', label='PDS x1 zero padding')
+plt.plot(Ff,10*np.log10(PDS3*(1/N)),'x', label='PDS x1 sin padding')
 plt.legend()
 plt.xlabel('Frecuencia [Hz]')
 plt.ylabel('Potencia [dB]')
 plt.grid()
-
-
-
-
-
-
-
-
-
-
-
 
