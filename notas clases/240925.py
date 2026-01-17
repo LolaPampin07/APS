@@ -70,7 +70,6 @@ ecg_one_lead = np.load('ecg_sin_ruido.npy')
 
 plt.figure()
 plt.plot(ecg_one_lead)
-plt.title('ecg sin ruido')
 
 
 #%%
@@ -87,7 +86,7 @@ fs_ppg = 400 # Hz
 ##################
 
 # # Cargar el archivo CSV como un array de NumPy
-ppg = np.genfromtxt('PPG.csv', delimiter=',', skip_header=1)  # Omitir la cabecera si existe
+# ppg = np.genfromtxt('PPG.csv', delimiter=',', skip_header=1)  # Omitir la cabecera si existe
 
 
 ##################
@@ -98,7 +97,6 @@ ppg = np.load('ppg_sin_ruido.npy')
 
 plt.figure()
 plt.plot(ppg)
-plt.title('ppg sin ruido')
 
 
 #%%
@@ -114,7 +112,6 @@ fs_audio, wav_data = sio.wavfile.read('la cucaracha.wav')
 
 plt.figure()
 plt.plot(wav_data)
-plt.title('la cucaracha')
 
 # si quieren oirlo, tienen que tener el siguiente módulo instalado
 # pip install sounddevice
